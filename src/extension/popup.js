@@ -141,6 +141,10 @@ function populateCharacter(response) {
             e = createHTMLOption("bloodhunter-crimson-rite", false, character_settings);
             options.append(e);
         }
+        if (response["class-features"].includes("Crimson Rite")) {
+            e = createHTMLOption("bloodhunter-crimson-rite-cold", false, character_settings);
+            options.append(e);
+        }
         if (response["class-features"].includes("Dread Ambusher")) {
             e = createHTMLOption("ranger-dread-ambusher", false, character_settings);
             options.append(e);
@@ -256,18 +260,6 @@ function populateCharacter(response) {
         }
         if (response["class-features"].includes("Natural Explorer")) {
             e = createHTMLOption("ranger-natural-explorer", false, character_settings);
-            options.append(e);
-        }
-        if (response["class-features"].includes("Spiritual Focus")) {
-            e = createHTMLOption("bard-spiritual-focus", false, character_settings);
-            options.append(e);
-        }
-        if (response["class-features"].includes("Durable Magic")) {
-            e = createHTMLOption("wizard-durable-magic", false, character_settings);
-            options.append(e);
-        }
-        if (response["class-features"].includes("Grave Touched")) {
-            e = createHTMLOption("warlock-grave-touched", false, character_settings);
             options.append(e);
         }
 

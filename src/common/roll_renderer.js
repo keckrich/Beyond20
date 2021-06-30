@@ -264,10 +264,7 @@ class Beyond20RollRenderer {
 
             play_sound = true;
             roll_name = roll_name[0].toUpperCase() + roll_name.slice(1) + ": ";
-            let dmg_classes = "beyond20-roll-result";
-            if (flags & DAMAGE_FLAGS.CRITICAL) dmg_classes += " beyond20-critical-damage";
-            if (flags & DAMAGE_FLAGS.HEALING) dmg_classes += " beyond20-healing";
-            html += `<div class='${dmg_classes}'><b>${roll_name}</b>${roll_html}</div>`;
+            html += "<div class='beyond20-roll-result'><b>" + roll_name + "</b>" + roll_html + "</div>";
             if (add_totals) {
                 let kind_of_damage = "";
                 if (flags & DAMAGE_FLAGS.REGULAR) {
@@ -323,9 +320,7 @@ class Beyond20RollRenderer {
             await roll.roll();
             total_damages[key] = roll;
             const roll_html = await this.rollToDetails(roll, is_total);
-            let total_classes = "beyond20-total-damage";
-            if (key.includes("Critical")) total_classes += " beyond20-critical-damage";
-            html += `<div class='beyond20-roll-result ${total_classes}'><b>Total ${key}: </b>${roll_html}</div>`;
+            html += "<div class='beyond20-roll-result'><b>Total " + key + ": </b>" + roll_html + "</div>";
         }
 
         if (request.damages && request.damages.length > 0 && 
@@ -559,7 +554,7 @@ class Beyond20RollRenderer {
                 all_rolls.push(roll);
                 const dmg_type = damage_types[i];
                 let damage_flags = DAMAGE_FLAGS.REGULAR;
-                if (["Healing", "Temp HP", "Alchemical Savant Healing", "Enhanced Bond Healing", "Spiritual Focus Healing"].includes(dmg_type)) {
+                if (["Healing", "Temp HP", "Alchemical Savant Healing", "Enhanced Bond Healing"].includes(dmg_type)) {
                     damage_flags = DAMAGE_FLAGS.HEALING;
                 } else if (i == 0) {
                     damage_flags = DAMAGE_FLAGS.REGULAR;
@@ -619,7 +614,7 @@ class Beyond20RollRenderer {
                     critical_damage_rolls.push(roll);
                     const dmg_type = critical_damage_types[i];
                     let damage_flags = DAMAGE_FLAGS.REGULAR;
-                    if (["Healing", "Temp HP", "Alchemical Savant Healing", "Enhanced Bond Healing", "Spiritual Focus Healing"].includes(dmg_type)) {
+                    if (["Healing", "Temp HP", "Alchemical Savant Healing", "Enhanced Bond Healing"].includes(dmg_type)) {
                         damage_flags = DAMAGE_FLAGS.HEALING;
                     } else if (i == 0) {
                         damage_flags = DAMAGE_FLAGS.REGULAR;

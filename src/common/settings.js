@@ -94,6 +94,14 @@ const options_list = {
         }
     },
 
+    "include-total":{
+      "short": "Show total damage",
+      "title": "Show total damage to roll",
+      "description": "When rolling attack and damage rolls show total damage",
+      "type": "bool",
+      "default": true
+    },
+
     "quick-rolls": {
         "short": "Add Quick Roll areas",
         "title": "Add Quick Rolls areas to main page",
@@ -433,12 +441,6 @@ const character_settings = {
         "type": "bool",
         "default": false
     },
-    "bard-spiritual-focus": {
-        "title": "Bard: College of Spirits: Spiritual Focus",
-        "description": "Use your Spiritual Focus to deal extra psychic damage, or apply extra healing",
-        "type": "bool",
-        "default": true
-    },
     "barbarian-rage": {
         "title": "Barbarian: Rage! You are raging, ARRGGHHHHHH",
         "description": "Add Rage damage to melee attacks and add advantage to Strength checks and saving throws",
@@ -448,6 +450,12 @@ const character_settings = {
     "barbarian-divine-fury": {
         "title": "Barbarian: Path of the Zealot: Divine Fury",
         "description": "Add Divine Fury damage to your attack (when raging)",
+        "type": "bool",
+        "default": true
+    },
+    "bloodhunter-crimson-rite-cold": {
+        "title": "Bloodhunter: Crimson Rite Cold?",
+        "description": "Add Crimson Rite cold damage. If false will be lightling",
         "type": "bool",
         "default": true
     },
@@ -601,12 +609,6 @@ const character_settings = {
         "type": "bool",
         "default": false
     },
-    "warlock-grave-touched": {
-        "title": "Warlock: The Undead: Grave Touched",
-        "description": "Your attacks become necrotic, and apply extra damage",
-        "type": "bool",
-        "default": false
-    },
     "wizard-bladesong": {
         "title": "Wizard: Bladesinger: Bladesong",
         "description": "Activate your Bladesong and make your weapon sing with magic",
@@ -618,12 +620,6 @@ const character_settings = {
         "description": "Your prowess in Evocation lends power to your Evocation spells",
         "type": "bool",
         "default": true
-    },
-    "wizard-durable-magic": {
-        "title": "Wizard: War Magic: Durable Magic",
-        "description": "While concenctrating on a spell, your savings throws are fortified",
-        "type": "bool",
-        "default": false
     },
     "charger-feat": {
         "title": "Feat: Charger Extra Damage (Apply to next roll only)",
@@ -1466,7 +1462,7 @@ function createHotkeysSetting(name, short) {
 
     const setting = E.li({
         id: "beyond20-option-hotkeys-bindings",
-        class: "list-group-item beyond20-option beyond20-option-bool" 
+        class: "list-group-item beyond20-option beyond20-option-bool"
     },
         E.label({ class: "list-content", for: name },
             E.h4({}, opt.title),
