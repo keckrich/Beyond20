@@ -94,6 +94,14 @@ const options_list = {
         }
     },
 
+    "include-total":{
+      "short": "Show total damage",
+      "title": "Show total damage to roll",
+      "description": "When rolling attack and damage rolls show total damage",
+      "type": "bool",
+      "default": true
+    },
+
     "quick-rolls": {
         "short": "Add Quick Roll areas",
         "title": "Add Quick Rolls areas to main page",
@@ -442,6 +450,12 @@ const character_settings = {
     "barbarian-divine-fury": {
         "title": "Barbarian: Path of the Zealot: Divine Fury",
         "description": "Add Divine Fury damage to your attack (when raging)",
+        "type": "bool",
+        "default": true
+    },
+    "bloodhunter-crimson-rite-cold": {
+        "title": "Bloodhunter: Crimson Rite Cold?",
+        "description": "Add Crimson Rite cold damage. If false will be lightling",
         "type": "bool",
         "default": true
     },
@@ -1448,7 +1462,7 @@ function createHotkeysSetting(name, short) {
 
     const setting = E.li({
         id: "beyond20-option-hotkeys-bindings",
-        class: "list-group-item beyond20-option beyond20-option-bool" 
+        class: "list-group-item beyond20-option beyond20-option-bool"
     },
         E.label({ class: "list-content", for: name },
             E.h4({}, opt.title),
