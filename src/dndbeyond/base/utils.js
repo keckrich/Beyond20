@@ -158,7 +158,7 @@ function buildAttackRoll(character, attack_source, name, description, properties
                 for (let i = 0; i < damage_types.length; i++) {
                     if (damage_types[i].includes("Piercing")){
                         const piercer_damage = damagesToCrits(character, [damages[i]]);
-                        if (piercer_damage.length > 0 && piercer_damage[0] != "") {    
+                        if (piercer_damage.length > 0 && piercer_damage[0] != "") {
                             piercer_damage[0] = piercer_damage[0].replace(/([0-9]+)d([0-9]+)/, '1d$2');
                             crit_damages.push(piercer_damage[0]);
                             crit_damage_types.push("Piercer Feat");
@@ -280,7 +280,7 @@ async function sendRoll(character, rollType, fallback, args) {
         if (key_modifiers.custom_sub_d12)
             req.character.settings["custom-roll-dice"] = (req.character.settings["custom-roll-dice"] || "") + " - 1d12";
     }
-        
+
     if (req.whisper === WhisperType.QUERY)
         req.whisper = await dndbeyondDiceRoller.queryWhisper(args.name || rollType, is_monster);
     if (req.advantage === RollType.QUERY)
@@ -288,6 +288,9 @@ async function sendRoll(character, rollType, fallback, args) {
     if (character.getGlobalSetting("weapon-force-critical", false) || key_modifiers.force_critical) {
         req["critical-limit"] = 1;
         req["rollCritical"] = true;
+    }
+    if (character.getGlobalSetting("include-total", false) || key_modifiers.include_total) {
+        req["includeTotal"] = true;
     }
 
 
@@ -558,4 +561,3 @@ function beyond20SendMessageFailure(character, response) {
         resetKeyModifiers();
     }
 }
-

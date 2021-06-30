@@ -141,6 +141,10 @@ function populateCharacter(response) {
             e = createHTMLOption("bloodhunter-crimson-rite", false, character_settings);
             options.append(e);
         }
+        if (response["class-features"].includes("Crimson Rite")) {
+            e = createHTMLOption("bloodhunter-crimson-rite-cold", false, character_settings);
+            options.append(e);
+        }
         if (response["class-features"].includes("Dread Ambusher")) {
             e = createHTMLOption("ranger-dread-ambusher", false, character_settings);
             options.append(e);

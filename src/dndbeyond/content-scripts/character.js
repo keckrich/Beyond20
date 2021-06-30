@@ -20,7 +20,7 @@ async function rollSkillCheck(paneClass) {
     let modifier = $("." + paneClass + "__header-modifier").text();
     const proficiency = $("." + paneClass + "__header-icon .ct-tooltip,." + paneClass + "__header-icon .ddbc-tooltip").attr("data-original-title");
 
-    
+
     if (ability == "--" && character._abilities.length > 0) {
         let prof = "";
         let prof_val = "";
@@ -91,7 +91,7 @@ async function rollSkillCheck(paneClass) {
     // Set Silver Tongue if Deception or Persuasion
     if (character.hasClassFeature("Silver Tongue") && (skill_name === "Deception" || skill_name === "Persuasion"))
         roll_properties.d20 = "1d20min10";
-    
+
     // Sorcerer: Clockwork Soul - Trance of Order
     if (character.hasClassFeature("Trance of Order") && character.getSetting("sorcerer-trance-of-order", false))
             roll_properties.d20 = "1d20min10";
@@ -235,7 +235,7 @@ function rollHitDie(multiclass, index) {
 /**
  * Split a custom damages line on commas, while ignoring commas inside parenthesis/brackets/curly braces
  * to allow Roll20 macros to work
- * 
+ *
  * @param {String} damages   The custom damages line
  */
 function split_custom_damages(damages) {
@@ -278,8 +278,8 @@ function isItemATool(item_name, source) {
     return source === "tool, common" ||
         item_name.includes(" Tools") || item_name.includes(" Tool") ||
         item_name.includes(" Kit") ||
-        item_name.includes(" Supplies") || 
-        item_name.includes(" Set") || 
+        item_name.includes(" Supplies") ||
+        item_name.includes(" Set") ||
         item_name === "Wagon" ||
         item_name.includes(" Utensils");
 }
@@ -332,7 +332,7 @@ function handleSpecialMeleeAttacks(damages=[], damage_types=[], properties, sett
 
     // Feats
     // Great Weapon Master Feat
-    if (to_hit !== null && 
+    if (to_hit !== null &&
         character.getSetting("great-weapon-master", false) &&
         character.hasFeat("Great Weapon Master") &&
         (properties["Properties"] && properties["Properties"].includes("Heavy") ||
@@ -351,14 +351,14 @@ function handleSpecialMeleeAttacks(damages=[], damage_types=[], properties, sett
         damage_types.push("Charger Feat");
         settings_to_change["charger-feat"] = false;
     }
-    
+
     return to_hit;
 }
 
 function handleSpecialRangedAttacks(damages=[], damage_types=[], properties, settings_to_change={}, {to_hit, action_name=""}={}) {
     // Feats
     // Sharpshooter Feat
-    if (to_hit !== null && 
+    if (to_hit !== null &&
         character.getSetting("sharpshooter", false) &&
         character.hasFeat("Sharpshooter") &&
         properties["Proficient"] == "Yes") {
@@ -367,7 +367,7 @@ function handleSpecialRangedAttacks(damages=[], damage_types=[], properties, set
         damage_types.push("Sharpshooter");
         settings_to_change["sharpshooter"] = false;
     }
-    
+
     return to_hit;
 }
 
@@ -400,7 +400,7 @@ function handleSpecialGeneralAttacks(damages=[], damage_types=[], properties, se
             damages.push(ranger_level < 6 ? "1d4" : ( ranger_level < 14 ? "1d6" : "1d8"));
             damage_types.push("Favored Foe");
         }
-        
+
         // Ranger: Gathered Swarm
         if (to_hit != null &&
             character.hasClassFeature("Gathered Swarm") &&
@@ -420,7 +420,7 @@ function handleSpecialGeneralAttacks(damages=[], damage_types=[], properties, se
             damages.push(character._proficiency);
             damage_types.push("Hexblade's Curse");
         }
-        
+
         // Warlock: Genie Patron: Genie's Wrath
         if (to_hit != null &&
             character.hasClassFeature("Genie’s Vessel") &&
@@ -458,7 +458,7 @@ function handleSpecialWeaponAttacks(damages=[], damage_types=[], properties, set
             damage_types.push("Divine Fury");
         }
     }
-    
+
     if (character.hasClass("Bard")) {
         // Bard: College of Whispers: Psychic blades
         if (character.hasClassFeature("Psychic Blades") &&
@@ -495,11 +495,11 @@ function handleSpecialWeaponAttacks(damages=[], damage_types=[], properties, set
                 else
                     rite_die = "1d10";
                 damages.push(rite_die);
-                damage_types.push("Crimson Rite");
+                damage_types.push(character.getSetting("bloodhunter-crimson-rite-cold", false) ? "Cold" : "Lightning");
             }
         }
     }
-    
+
     if (character.hasClass("Cleric")) {
         // Cleric: Divine Strike
         if (character.hasClassFeature("Divine Strike") &&
@@ -522,7 +522,7 @@ function handleSpecialWeaponAttacks(damages=[], damage_types=[], properties, set
 
     if (character.hasClass("Paladin")) {
         // Paladin: Sacred Weapon
-        if (to_hit !== null && 
+        if (to_hit !== null &&
             character.getSetting("paladin-sacred-weapon", false)) {
             const charisma_attack_mod =  Math.max(character.getAbility("CHA").mod, 1);
             to_hit += `+ ${charisma_attack_mod}`;
@@ -536,21 +536,21 @@ function handleSpecialWeaponAttacks(damages=[], damage_types=[], properties, set
             damage_types.push("Dread Ambusher");
             settings_to_change["ranger-dread-ambusher"] = false;
         }
-        
+
         // Ranger: Hunter: Colossus Slayer
         if (character.hasClassFeature("Hunter’s Prey: Colossus Slayer") &&
             character.getSetting("ranger-colossus-slayer", false)) {
             damages.push("1d8");
             damage_types.push("Colossus Slayer");
         }
-        
+
         // Ranger: Monster Slayer: Slayer's Prey
         if (character.hasClassFeature("Slayer’s Prey") &&
             character.getSetting("ranger-slayers-prey", false)) {
             damages.push("1d6");
             damage_types.push("Slayer’s Prey");
         }
-        
+
         // Ranger: Horizon Walker: Planar Warrior
         if (character.hasClassFeature("Planar Warrior") &&
             character.getSetting("ranger-planar-warrior", false)) {
@@ -567,7 +567,7 @@ function handleSpecialWeaponAttacks(damages=[], damage_types=[], properties, set
             damage_types.push("Dreadful Strikes");
         }
     }
-    
+
     if (character.hasClass("Rogue")) {
         // Rogue: Sneak Attack
         if (character.getSetting("rogue-sneak-attack", false) &&
@@ -708,9 +708,9 @@ function rollItem(force_display = false, force_to_hit_only = false, force_damage
                 break;
             }
         }
-        
+
         const weapon_damage_length = damages.length;
-        
+
         // If clicking on a spell group within a item (Green flame blade, Booming blade), then add the additional damages from that spell
         if (spell_group) {
             const group_name = $(spell_group).find(".ct-item-detail__spell-damage-group-name").text();
@@ -744,7 +744,7 @@ function rollItem(force_display = false, force_to_hit_only = false, force_damage
         if (properties["Attack Type"] == "Ranged") {
             to_hit = handleSpecialRangedAttacks(damages, damage_types, properties, settings_to_change, {to_hit});
         }
-        
+
         let critical_limit = 20;
         if (character.hasAction("Channel Divinity: Legendary Strike") &&
             character.getSetting("paladin-legendary-strike", false))
@@ -925,10 +925,10 @@ function rollAction(paneClass, force_to_hit_only = false, force_damages_only = f
 
         const isMeleeAttack = action_name.includes("Polearm Master - Bonus Attack") || action_name.includes("Unarmed Strike") || action_name.includes("Tavern Brawler Strike")
         || action_name.includes("Psychic Blade") || action_name.includes("Bite") || action_name.includes("Claws") || action_name.includes("Tail")
-        || action_name.includes("Ram") || action_name.includes("Horns") || action_name.includes("Hooves") || action_name.includes("Talons") 
+        || action_name.includes("Ram") || action_name.includes("Horns") || action_name.includes("Hooves") || action_name.includes("Talons")
         || action_name.includes("Thunder Gauntlets") || action_name.includes("Unarmed Fighting") || action_name.includes("Arms of the Astral Self")
         || action_name.includes("Shadow Blade");
-        
+
         const isRangedAttack = action_name.includes("Lightning Launcher");
 
         to_hit = handleSpecialGeneralAttacks(damages, damage_types, properties, settings_to_change, {to_hit, action_name});
@@ -970,6 +970,9 @@ function rollAction(paneClass, force_to_hit_only = false, force_damages_only = f
             action_name === "Halo of Spores") {
             damages[0] = damages[0].replace(/1d/g, "2d");
         }
+
+        //replace a fixed damage as a roll. Allows hovering over and fixes total rolls
+        damages[0] = damages[0].replace(/^(\d*)$/g, x => ("[["+x+"]]"));
 
         const roll_properties = buildAttackRoll(character,
             "action",
@@ -1062,7 +1065,7 @@ function handleSpecialSpells(spell_name, damages=[], damage_types=[], {spell_sou
             damage_types.push("Arcane Firearm");
         }
     }
-    
+
     if (character.hasClass("Druid")) {
         // Druid: Wildfire Druid: Enhanced Bond
         if (character.hasClassFeature("Enhanced Bond") &&
@@ -1088,7 +1091,7 @@ function handleSpecialSpells(spell_name, damages=[], damage_types=[], {spell_sou
             damage_types.push("Empowered Evocation");
         }
     }
-    
+
     // NOTE: Below this line are things that work on ALL damages, they should stay there
     // Artificer
     if (character.hasClass("Artificer")) {
@@ -1106,7 +1109,7 @@ function handleSpecialSpells(spell_name, damages=[], damage_types=[], {spell_sou
             }
         }
     }
-    
+
     // Check for Draconic Sorcerer's Elemental Affinity;
     let elementalAffinity = null;
     for (let feature of character._class_features) {
@@ -1124,7 +1127,7 @@ function handleSpecialSpells(spell_name, damages=[], damage_types=[], {spell_sou
             }
         }
     }
-    
+
     // Check for Elemental Adept Feats
     const elementalAdepts = [];
     for (let feature of character._feats) {
@@ -1153,7 +1156,7 @@ function handleSpecialSpells(spell_name, damages=[], damage_types=[], {spell_sou
     }
 
 }
-    
+
 function handleSpecialHealingSpells(spell_name, damages=[], damage_types=[], {spell_source="", spell_level="Cantrip", castas}={}) {
     // Artificer
     if (character.hasClass("Artificer")) {
@@ -1171,7 +1174,7 @@ function handleSpecialHealingSpells(spell_name, damages=[], damage_types=[], {sp
     }
 
     // Druid
-    if (character.hasClass("Druid")) {    
+    if (character.hasClass("Druid")) {
         if (character.hasClassFeature("Enhanced Bond") &&
             character.getSetting("wildfire-spirit-enhanced-bond", false)) {
             for (let i = 0; i < damages.length; i++){
@@ -1183,7 +1186,7 @@ function handleSpecialHealingSpells(spell_name, damages=[], damage_types=[], {sp
             }
         }
     }
-    
+
     // Supreme Healing must ALWAYS be at the end, at it maxes all healing dice
     if (character.hasClass("Cleric")) {
         if (character.hasClassFeature("Supreme Healing")) {
@@ -1218,7 +1221,7 @@ function rollSpell(force_display = false, force_to_hit_only = false, force_damag
     } else {
         concentration = false;
     }
-    
+
     // Find the icon with the AoE effect (<i class="i-aoe-sphere">) and convert it to a word
     const range_shape = $(".ct-spell-pane .ddbc-property-list__property .ct-spell-detail__range-shape i");
     const aoe_class = (range_shape.attr("class") || "").split(" ").find(c => c.startsWith("i-aoe-"));
@@ -1236,7 +1239,7 @@ function rollSpell(force_display = false, force_to_hit_only = false, force_damag
         const damages = [];
         const damage_types = [];
         const settings_to_change = {}
-        
+
         for (let modifier of damage_modifiers.toArray()) {
             const dmg = $(modifier).find(".ct-spell-caster__modifier-amount,.ddbc-spell-caster__modifier-amount").text();
             const dmgtype = $(modifier).find(".ct-damage-type-icon .ct-tooltip,.ddbc-damage-type-icon .ddbc-tooltip").attr("data-original-title") || "";
@@ -1246,7 +1249,7 @@ function rollSpell(force_display = false, force_to_hit_only = false, force_damag
 
         if (damages.length > 0) {
             to_hit = handleSpecialGeneralAttacks(damages, damage_types, properties, settings_to_change, {to_hit, spell_name, spell_level: level});
-        
+
             handleSpecialSpells(spell_name, damages, damage_types, {spell_level: level, spell_source, castas});
         }
 
@@ -1464,7 +1467,7 @@ function handleCustomText(paneClass) {
             // Ignore errors that might be caused by DOTALL regexp flag not being supported by the browser
         }
     }
-    
+
     return customRolls;
 }
 
@@ -1478,7 +1481,7 @@ async function execute(paneClass, {force_to_hit_only = false, force_damages_only
             });
         }
      };
-     
+
     const customTextRolls = handleCustomText(paneClass);
     await rollCustomText(customTextRolls.before);
     if (customTextRolls.replace.length > 0) {
@@ -1770,7 +1773,7 @@ function injectRollButton(paneClass) {
         if (deathsaves.length > 0) {
             if (isRollButtonAdded(deathsaves) || isCustomRollIconsAdded(deathsaves))
                 return;
-            
+
             // Check for Advantage/Disadvantage Badges, as Lineages: Reborn advantage on Death Saves or similar will supply
             const skill_badge_adv = $(".ct-health-manage-pane .ct-health-manager__deathsaves .ddbc-advantage-icon").length > 0;
             const skill_badge_disadv = $(".ct-health-manage-pane .ct-health-manager__deathsaves .ddbc-disadvantage-icon").length > 0;
@@ -1782,7 +1785,7 @@ function injectRollButton(paneClass) {
             } else if (skill_badge_disadv) {
                 deathSaveRollType = RollType.OVERRIDE_DISADVANTAGE;
             }
-            
+
             addIconButton(character, () => {
                 sendRollWithCharacter("death-save", "1d20", { "advantage": deathSaveRollType })
             }, ".ct-health-manager__deathsaves-group--fails", { custom: true });
@@ -1869,7 +1872,7 @@ function injectRollToSnippets() {
 
     for (let group of groups.toArray()) {
         const snippet = $(group);
-                
+
         // Not the most optimal, but avoids double-adding dice. Problem is that the dice get cleared out by
         // DDB when a panel is opened, so we can't mark the snippet itself with a custom class, as that doesn't
         // get modified.
@@ -1920,7 +1923,7 @@ function injectRollToSnippets() {
                 if (rightFormula.trim() !== $(modifier).find("u.ct-beyond20-custom-roll").text()) continue;
                 $(customRoll).find("img.ct-beyond20-custom-icon").hide();
             }
-            
+
             const formula = `${leftFormula}${rightFormula}`;
             $(customRoll).find("img.ct-beyond20-custom-icon").attr("x-beyond20-roll", formula)
             $(modifier).find("img.ct-beyond20-custom-icon").attr("x-beyond20-roll", formula);
@@ -2290,7 +2293,7 @@ function documentModified(mutations, observer) {
     if (customRoll && settings['use-digital-dice']) {
         dndbeyondDiceRoller.sendCustomDigitalDice(character, customRoll);
     }
-    
+
     const pane = $(".ct-sidebar__pane-content > div");
     if (pane.length > 0) {
         for (let div = 0; div < pane.length; div++) {
